@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 import '../components/components.dart';
-
 import '../models/models.dart';
 
 class GroceryItemScreen extends StatefulWidget {
@@ -73,7 +72,7 @@ class _GroceryItemScreenState extends State<GroceryItemScreen> {
 
   @override
   Widget build(BuildContext context) {
-// 1
+    // 1
     return Scaffold(
       // 2
       appBar: AppBar(
