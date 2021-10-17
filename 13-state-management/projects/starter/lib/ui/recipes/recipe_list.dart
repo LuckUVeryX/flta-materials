@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import '../../data/models/models.dart';
 import '../../network/model_response.dart';
 import '../../network/recipe_model.dart';
-import '../../network/recipe_service.dart';
 import '../colors.dart';
 import '../recipe_card.dart';
 import '../recipes/recipe_details.dart';
