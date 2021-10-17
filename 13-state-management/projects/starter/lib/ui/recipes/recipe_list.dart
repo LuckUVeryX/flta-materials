@@ -2,15 +2,18 @@ import 'dart:math';
 
 import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
-import '../widgets/custom_dropdown.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../mock_service/mock_service.dart';
+import 'package:provider/provider.dart';
+
+import '../../data/models/models.dart';
 import '../../network/model_response.dart';
 import '../../network/recipe_model.dart';
-import '../../network/recipe_service.dart';
+import '../colors.dart';
 import '../recipe_card.dart';
 import '../recipes/recipe_details.dart';
-import '../colors.dart';
+import '../widgets/custom_dropdown.dart';
 
 class RecipeList extends StatefulWidget {
   const RecipeList({Key? key}) : super(key: key);
@@ -193,7 +196,7 @@ class _RecipeListState extends State<RecipeList> {
       return Container();
     }
     return FutureBuilder<Response<Result<APIRecipeQuery>>>(
-      future: RecipeService.create().queryRecipes(
+      future: Provider.of<MockService>(context).queryRecipes(
           searchTextController.text.trim(),
           currentStartPosition,
           currentEndPosition),
@@ -265,11 +268,23 @@ class _RecipeListState extends State<RecipeList> {
     final recipe = hits[index].recipe;
     return GestureDetector(
       onTap: () {
-        Navigator.push(topLevelContext, MaterialPageRoute(
-          builder: (context) {
-            return const RecipeDetails();
-          },
-        ),);
+        Navigator.push(
+          topLevelContext,
+          MaterialPageRoute(
+            builder: (context) {
+              final detailRecipe = Recipe(
+                  label: recipe.label,
+                  image: recipe.image,
+                  url: recipe.url,
+                  calories: recipe.calories,
+                  totalTime: recipe.totalTime,
+                  totalWeight: recipe.totalWeight);
+
+              detailRecipe.ingredients = convertIngredients(recipe.ingredients);
+              return RecipeDetails(recipe: detailRecipe);
+            },
+          ),
+        );
       },
       child: recipeCard(recipe),
     );
